@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Type & Earn - MVP</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="app.js"></script>
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand">Type & Earn</div>
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-label">Points</div>
+            <div id="points" class="stat-value">0</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Est. ₱</div>
+            <div id="earnings" class="stat-value">0</div>
+          </div>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="card" id="homeView">
+          <h2>Play to earn</h2>
+          <p class="muted">Type the word before time runs out. Correct = +1 point. 60 seconds per game.</p>
+
+          <div class="grid2">
+            <div class="mini">
+              <div class="mini-label">Difficulty</div>
+              <div class="seg">
+                <button class="seg-btn" data-diff="easy">Easy</button>
+                <button class="seg-btn active" data-diff="medium">Medium</button>
+                <button class="seg-btn" data-diff="hard">Hard</button>
+              </div>
+            </div>
+
+            <div class="mini">
+              <div class="mini-label">Referral</div>
+              <div class="row">
+                <input id="refInput" class="input" placeholder="Optional code" maxlength="32" />
+                <button id="saveReferral" class="btn ghost">Apply</button>
+              </div>
+              <div class="small muted" id="refStatus">No referral applied.</div>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top: 14px; justify-content: space-between; gap: 12px;">
+            <button id="btnPlay" class="btn primary">Start Game (60s)</button>
+            <button id="btnHistory" class="btn">History</button>
+            <button id="btnWithdraw" class="btn">Withdraw</button>
+          </div>
+
+          <div class="divider"></div>
+
+          <h3 class="section-title">Daily reward</h3>
+          <div class="daily">
+            <div class="daily-row">
+              <div>
+                <div class="muted">Today’s status</div>
+                <div id="dailyStatus" class="big">Not claimed</div>
+              </div>
+              <button id="btnClaimDaily" class="btn">Claim</button>
+            </div>
+            <div class="muted small" id="dailyMeta"></div>
+          </div>
+        </section>
+
+        <section class="card" id="gameView" style="display:none;">
+          <div class="game-top">
+            <div>
+              <div class="muted">Time left</div>
+              <div id="timeLeft" class="big">60s</div>
+            </div>
+            <div>
+              <div class="muted">Progress</div>
+              <div id="progressText" class="big">0%</div>
+            </div>
+            <div>
+              <div class="muted">Accuracy</div>
+              <div id="accuracy" class="big">0%</div>
+            </div>
+            <div>
+              <div class="muted">WPM</div>
+              <div id="wpm" class="big">0</div>
+            </div>
+          </div>
+
+          <div class="progressbar">
+            <div id="progressBar" class="bar" style="width:0%"></div>
+          </div>
+
+          <div class="wordWrap">
+            <div class="muted small">Type this word</div>
+            <div id="currentWord" class="word">—</div>
+          </div>
+
+          <div class="row" style="gap: 10px;">
+            <input
+              id="typedInput"
+              class="input input-lg"
+              placeholder="Start typing..."
+              autocomplete="off"
+            />
+            <button id="btnSubmit" class="btn primary">Submit</button>
+          </div>
+
+          <div class="game-stats">
+            <div class="miniStat">
+              <div class="muted small">Current game score</div>
+              <div id="gameScore" class="big">0</div>
+            </div>
+            <div class="miniStat">
+              <div class="muted small">Correct</div>
+              <div id="gameCorrect" class="big">0</div>
+            </div>
+            <div class="miniStat">
+              <div class="muted small">Total typed</div>
+              <div id="gameTotal" class="big">0</div>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top: 10px; justify-content: space-between;">
+            <button id="btnPause" class="btn ghost">Pause</button>
+            <button id="btnRestart" class="btn">Restart</button>
+          </div>
+
+          <div class="notice" id="gameNotice" style="display:none;">
+            <div class="notice-title">Game Over</div>
+            <div id="gameSummary" class="small"></div>
+            <button id="btnBackHome" class="btn primary">Back to Home</button>
+          </div>
+        </section>
+
+        <section class="card" id="historyView" style="display:none;">
+          <h2>History</h2>
+          <div class="muted small">Saved locally in your browser.</div>
+          <div class="divider"></div>
+          <div id="historyList" class="list"></div>
+          <button id="btnClearHistory" class="btn danger">Clear</button>
+        </section>
+
+        <section class="card" id="withdrawView" style="display:none;">
+          <h2>Withdraw</h2>
+          <p class="muted">Minimum withdrawal: <b>1000 points</b> (10 points = ₱1).</p>
+          <div class="divider"></div>
+
+          <div class="row" style="gap: 10px;">
+            <input id="withdrawName" class="input" placeholder="Full name" />
+          </div>
+          <div class="row" style="gap: 10px;">
+            <input id="withdrawGCash" class="input" placeholder="GCash number" />
+          </div>
+
+          <div class="row" style="justify-content: space-between; margin-top: 10px;">
+            <div>
+              <div class="muted small">Your points</div>
+              <div id="withdrawPoints" class="big">0</div>
+            </div>
+            <div>
+              <div class="muted small">Amount (₱)</div>
+              <div id="withdrawAmount" class="big">0</div>
+            </div>
+          </div>
+
+          <button id="btnSubmitWithdraw" class="btn primary" style="width:100%; margin-top: 12px;">Request Withdrawal</button>
+
+          <div class="divider"></div>
+          <h3 class="section-title">Requests</h3>
+          <div id="withdrawList" class="list"></div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span class="muted small">This is a local MVP (no real payments). For production, validate scores server-side. <br><br>Created By: Daniel Amores</span>
+      </footer>
+    </div>
+  </body>
+</html>
+
